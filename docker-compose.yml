@@ -1,0 +1,45 @@
+
+services:
+  express-app:
+    image: express-app:latest # take this image if locally available
+    build: . # otherwise build it from Dockerfile in current directory
+    ports:
+      - "3000" # Map the port that Express is running on
+    environment:
+      NODE_ENV: development # set node environment to development
+      TZ: ${TZ} 
+      MONGO_URL: ${MONGO_URL}
+      HOST: ${HOST}
+    command: npm start # start express app
+    depends_on:
+      - mongodb # run only if the mongodb container has started
+
+  nginx:
+    image: nginx:latest # pull nginx image
+    ports:
+      - "80:80"  # Map port 80 on the host to port 80 inside the NGINX container
+      - "443:443" # Map port 443 on the host to port 443 inside the NGINX container
+    environment:
+      - TZ=${TZ}  # Set the timezone based on the environment variable
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf  # Map your custom nginx.conf to the container
+      - ./index.html:/usr/share/nginx/html/index.html # Copy index.html into the container 
+      - ./cert:/usr/share/nginx/cert  # Copy all certificate files into the container
+      - ./nginx/logs:/var/log/nginx   # Map NGINX logs from the container to the host machine
+    depends_on:
+      - express-app  # Ensure the NGINX container starts after the Express app is up
+
+
+  mongodb:
+    image: mongo:latest   # Use the latest MongoDB image
+    container_name: mongodb   # Set a custom name for the MongoDB container
+    environment:
+      - TZ=${TZ}   # Set the timezone based on the environment variable
+    ports:
+      - "27017:27017"  # Map port 27017 on the host to port 27017 in the MongoDB container
+    volumes:
+      - mongo-data:/data/db # Persist MongoDB data in a named volume to retain data across container restarts
+
+volumes:
+  mongo-data: # Define a named volume for persisting MongoDB data across container restarts
+
