@@ -1,6 +1,6 @@
 # Learning Docker With Nginx
 
-# Dockerized Express Application with NGINX and MongoDB
+## Dockerized Express Application with NGINX and MongoDB
 
 This repository is designed for learning and experimenting with Nginx as a reverse proxy and load balancer using Docker and Docker Compose. It supports running a frontend, a Node.js backend, and MongoDB with a single command. Additionally, it includes instructions for setting up a local subdomain and configuring SSL.
 
