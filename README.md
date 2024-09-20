@@ -51,7 +51,9 @@ To access the application using the subdomain `api.localhost`, add the following
    `HOST='0.0.0.0'`
 
 3. Build and run the containers:
-   `docker-compose up --build`
+   - To build and run the containers: `docker-compose up --build`
+   - To start multiple instances of the Express server (e.g., scaling to 3 instances): `docker-compose up --build --scale express-app=3`
+   - To run the containers in detached mode (in the background): `docker-compose up --build -d` or `docker-compose up --build --scale express-app=3 -d`
    
 5. Access the application:
   - HTTP: http://localhost
@@ -85,8 +87,18 @@ To access the application using the subdomain `api.localhost`, add the following
   - HOST: keep it '0.0.0.0'.
 
 # Docker Commands
-  - Build the images and start the containers: `docker-compose up --build`
+  - Build the images and start the containers: 
+    ```
+    docker-compose up --build
+    docker-compose up --build -d
+    docker-compose up --build --scale express-app=3
+    docker-compose up --build --scale express-app=3 -d
+    ```
   - Stop the containers: `docker-compose down`
   - View logs: `docker-compose logs`
-  - Remove dangling images and volumes: `docker image prune -f` `docker volume prune -f`
+  - Remove dangling images and volumes:
+    ```
+    docker image prune -f
+    docker volume prune -f
+    ```
     
