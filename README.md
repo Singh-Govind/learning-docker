@@ -20,7 +20,9 @@ This repository contains a Dockerized setup for an Express.js application, an NG
 ### Generate Self-Signed Certificates
 To enable HTTPS, you need to generate a self-signed SSL certificate. You can do this using OpenSSL with the following command:
 
-`openssl req -nodes -new -x509 -keyout cert/server.key -out cert/server.cert -days 365`
+```
+openssl req -nodes -new -x509 -keyout cert/server.key -out cert/server.cert -days 365
+```
 
 ### Update Hosts File
 To access the application using the subdomain `api.localhost`, add the following entry to your hosts file:
@@ -38,27 +40,31 @@ To access the application using the subdomain `api.localhost`, add the following
 
 1. Clone the repository:
    
-   `git clone https://github.com/singh-govind/learning-docker.git`
+   ```
+   git clone https://github.com/singh-govind/learning-docker.git
    
-   `cd learning-docker`
+   cd learning-docker
+   ```
 
-2. Create a .env file in the root directory to set environment variables. Example:
+3. Create a .env file in the root directory to set environment variables. Example:
 
-   `TZ=Asia/Kolkata`
+   ```
+   TZ=Asia/Kolkata
 
-   `MONGO_URL=mongodb://mongodb:27017/your-database`
+   MONGO_URL=mongodb://mongodb:27017/your-database
 
-   `HOST='0.0.0.0'`
+   HOST='0.0.0.0'
+   ```
 
-3. Build and run the containers:
+5. Build and run the containers:
    - To build and run the containers: `docker-compose up --build`
    - To start multiple instances of the Express server (e.g., scaling to 3 instances): `docker-compose up --build --scale express-app=3`
    - To run the containers in detached mode (in the background): `docker-compose up --build -d` or `docker-compose up --build --scale express-app=3 -d`
    
-5. Access the application:
-  - HTTP: http://localhost
-  - HTTPS: https://localhost
-  - API: https://api.localhost
+6. Access the application:
+   - HTTP: http://localhost
+   - HTTPS: https://localhost
+   - API: https://api.localhost
 
 # Directory Structure
     learning-docker/
