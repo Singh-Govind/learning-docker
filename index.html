@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Let see if this pages serves or not</h1>
+    <div id="container"></div>
+    <form id="form">
+        <input type="text" placeholder="user" id="user">
+        <input type="email" placeholder="email" id="email">
+        <button>Submit</button>
+    </form>
+
+    <input type="text" id="see-user" placeholder="enter username">
+    <button id="result">See Result</button>
+    <p>Just to be sure everything is working.</p>
+    <div id="display"></div>
+
+    <script>
+        const baseUrl = "https://api.localhost"
+        document.getElementById("form").addEventListener("submit", submit);
+        document.getElementById("result").addEventListener("click", displayResult);
+
+        async function displayResult() {
+            const user = document.getElementById("see-user").value;
+            const res = await fetch(`${baseUrl}/${user}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            const data = await res.json();
+            document.getElementById("display").innerText = JSON.stringify(data);
+            document.getElementById("see-user").value = "";
+        }
+
+        async function submit(e) {
+            e.preventDefault();  
+            const user = document.getElementById("user").value;
+            const email = document.getElementById("email").value;
+
+            const res = await fetch(`${baseUrl}/make-user`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({user, email})
+            });
+
+            const data = res.json();
+            
+            console.log(data);
+            document.getElementById("user").value = "";
+            document.getElementById("email").value = "";
+        }
+
+        async function fetchContainerId() {
+            const res = await fetch(baseUrl, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            
+            const data = await res.json();
+            
+            document.getElementById("container").innerText = data.msg;
+        }
+
+        fetchContainerId();
+    </script>
+</body>
+</html>
