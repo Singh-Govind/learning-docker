@@ -3,6 +3,9 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const {hostname} = require("node:os");
 require("dotenv").config();
+const {connectRabbitMQ, sendToQueue} = require("./rabbit-mq");
+
+connectRabbitMQ(); // connecting to rabbitmq
 
 // this was just for testing nginx load balancer and docker thingy
 
@@ -42,6 +45,7 @@ app.get("/:usern", async (req, res) => {
 app.post("/make-user", async (req, res) => {
     const {user, email} = req.body;
     try {
+        await sendToQueue("gov", JSON.stringify({ user })); //sending data to "gov" queue
         const userC = await User.create({user, email});
 
         res.json({msg: 'user created', userC});
