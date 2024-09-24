@@ -12,7 +12,10 @@ services:
       HOST: ${HOST}
     command: npm start # start express app
     depends_on:
-      - mongodb # run only if the mongodb container has started
+      rabbitmq:
+        condition: service_healthy
+      mongodb: 
+        condition: service_started # run only if the mongodb container has started
 
   nginx:
     image: nginx:latest # pull nginx image
@@ -40,6 +43,24 @@ services:
     volumes:
       - mongo-data:/data/db # Persist MongoDB data in a named volume to retain data across container restarts
 
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"  # RabbitMQ main port (AMQP)
+      - "15672:15672"  # RabbitMQ Management UI
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: user  # Replace with your username
+      RABBITMQ_DEFAULT_PASS: password  # Replace with your password
+      RABBITMQ_ERLANG_COOKIE: 'some_secret_cookie'  # Used for clustering
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 volumes:
   mongo-data: # Define a named volume for persisting MongoDB data across container restarts
-
+  rabbitmq_data: 
