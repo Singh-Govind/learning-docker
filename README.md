@@ -51,7 +51,7 @@ To access the application using the subdomain `api.localhost`, add the following
    ```
    TZ=Asia/Kolkata
 
-   MONGO_URL=mongodb://mongodb:27017/your-database
+   MONGO_URL=mongodb://mongodb/your-database // the second mongodb is name of the container which is running on same network bridge
 
    HOST='0.0.0.0'
    ```
@@ -91,7 +91,7 @@ To access the application using the subdomain `api.localhost`, add the following
 # Environment Variables
     
   - TZ: Set the timezone for your application, Asia/Kolkata.
-  - MONGO_URL: Connection string for MongoDB, because in docker-compose its container name is mongodb thats why mongodb://mongodb:27017/database-name.
+  - MONGO_URL: Connection string for MongoDB, because in docker-compose its container name is mongodb thats why mongodb://mongodb/database-name.
   - HOST: keep it '0.0.0.0'.
 
 # Docker Commands
@@ -109,4 +109,10 @@ To access the application using the subdomain `api.localhost`, add the following
     docker image prune -f
     docker volume prune -f
     ```
-    
+
+### Note:
+Start worker.js on host machine with below command for listening to the messages of queue sent from server.
+```
+node ./worker.js
+```
+
