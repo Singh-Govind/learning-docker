@@ -75,6 +75,8 @@ To access the application using the subdomain `api.localhost`, add the following
     |
     ├── index.html             # Static HTML file served by NGINX
     ├── index.js               # Main entry point for the Express application
+    ├── rabbit-mq.js           # RabbitMQ setup for the Express server, acts as a message sender, runs in a Docker container
+    ├── worker.js              # Message receiver, runs on a different machine or environment to process tasks received from the queue
     ├── package.json           # Node.js dependencies and scripts
     ├── package-lock.json      # Locked versions of dependencies
     |
